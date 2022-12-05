@@ -3,12 +3,14 @@ const colors = {
   secondry: '#FE8E59',
 //   background: '#',
   white: '#fff',
-  black: '#000'
+  black: '#000',
+  error: '#FF0000'
+
 };
 
 const gray = {
   50: '#F9FAFB',
-  100: '#F3F4F6',
+  100: '#F3F4F8',
   200: '#E5E7EB',
   300: '#D1D5DB',
   400: '#9CA3AF',
@@ -16,7 +18,7 @@ const gray = {
   600: '#4B5563',
   700: '#374151',
   800: '#1F2937',
-  900: '#111827',
+  900: '#172331',
 };
 // color: #8C8FA5;
 export default {...colors, gray};

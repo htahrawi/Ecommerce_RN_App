@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: 200,
     borderRadius: 10,
+    elevation: 4,
   },
   btnText: {
     fontSize: 20,
