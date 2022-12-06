@@ -1,27 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { SignInScreen, SignUpScreen, SplashScreen } from '../screens/'
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {SignInScreen, SignUpScreen, SplashScreen} from '../screens/';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={
-          {headerShown: false}
-        }
-      >
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="splash" component={SplashScreen} />
         <Stack.Screen name="signIn" component={SignInScreen} />
-        <Stack.Screen name="signup" component={SignUpScreen} />
+        <Stack.Screen name="signUp" component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 
-export default Navigation
+export default Navigation;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
