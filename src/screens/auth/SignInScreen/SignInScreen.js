@@ -1,25 +1,22 @@
 import {
   Dimensions,
-  Image,
-  Pressable,
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
+  SafeAreaView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Colors from '../../../theme/Colors';
 import {CustomButton, CustomInput} from '../../../components';
 
 const {height, width} = Dimensions.get('window');
 
-const SignInScreen = () => {
+const SignInScreen = props => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'dark-content'} backgroundColor={Colors.white} />
@@ -31,25 +28,34 @@ const SignInScreen = () => {
         <CustomInput
           label="Username"
           placeholder={'husam.tahrawi'}
+          value={username}
           iconPath={require('../../../assets/icons/user.png')}
-          onChangeText={(value)=>{setUsername(value)}}
+          onChangeText={value => {
+            setUsername(value);
+          }}
         />
         <CustomInput
           label="Password"
           placeholder={'*********'}
+          value={password}
           iconPath={require('../../../assets/icons/lock.png')}
-          onChangeText={(value)=>{setPassword(value)}}
+          onChangeText={value => {
+            setPassword(value);
+          }}
           isPassword
         />
         <CustomButton
           title="Sign In"
           myBtnStyle={{alignSelf: 'center', width: '100%', marginTop: 30}}
-          onPress={()=>{}}
+          onPress={() => {}}
         />
       </View>
       <View style={{flexDirection: 'row'}}>
         <Text style={{fontSize: 15}}>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('signUp');
+          }}>
           <Text style={{color: Colors.primary}}>Sign up</Text>
         </TouchableOpacity>
       </View>

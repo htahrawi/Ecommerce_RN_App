@@ -17,7 +17,8 @@ const CustomInput = ({
   iconPath,
   isPassword = false,
   onChangeText,
-  errorText=''
+  errorText='',
+  value
 }) => {
   const [showPassword, setShowPassword] = useState(isPassword);
   const [errorMessage, setErrorMessage] = useState(errorText);
@@ -49,9 +50,10 @@ const CustomInput = ({
           </TouchableOpacity>
         ) : null}
       </View>
+      {errorMessage?
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>{errorMessage}</Text>
-      </View>
+      </View>: null}
     </View>
   );
 };
