@@ -47,7 +47,7 @@ const SignInScreen = props => {
         <CustomButton
           title="Sign In"
           myBtnStyle={{alignSelf: 'center', width: '100%', marginTop: 30}}
-          onPress={() => {}}
+          onPress={() => {props.navigation.navigate('main')}}
         />
       </View>
       <View style={{flexDirection: 'row'}}>
