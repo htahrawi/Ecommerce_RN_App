@@ -35,7 +35,8 @@ const TabNavigator = props => {
           backgroundColor: Colors.white,
           height: 56,
           elevation: 5,
-          shadowColor: Colors.black,
+          borderWidth: 0,
+          // opacity: 
         },
         headerShown: true,
         headerStyle: {
@@ -50,7 +51,7 @@ const TabNavigator = props => {
         headerLeft: () => (
           <TouchableOpacity
             onPress={() => {
-              //   props.navigation.navigate('TabNavigator');
+              //   props.navigation.navigate('TabNavigaftor');
             }}>
             <Image
               source={require('../assets/icons/back.png')}

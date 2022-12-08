@@ -1,11 +1,10 @@
 const colors = {
   primary: '#FD5606',
-  secondry: '#FE8E59',
-//   background: '#',
+  secondry: '#FE8E5929',
+  background: '#FE8E59',
   white: '#fff',
   black: '#000',
-  error: '#FF0000'
-
+  error: '#FF0000',
 };
 
 const gray = {
