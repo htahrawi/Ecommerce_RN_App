@@ -45,7 +45,6 @@ const Item = ({name}) => (
     <Text style={styles.title}>{name}</Text>
   </TouchableOpacity>
 );
-
 const CategoriesScreen = () => {
   const renderItem = ({item}) => <Item name={item.name} />;
   return (
