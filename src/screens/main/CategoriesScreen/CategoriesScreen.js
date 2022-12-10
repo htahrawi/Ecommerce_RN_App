@@ -52,7 +52,6 @@ const CategoriesScreen = () => {
       <StatusBar backgroundColor={Colors.primary} />
       <FlatList
         showsVerticalScrollIndicator= {false}
-        showsHorizontalScrollIndicator={false}
         data={DATA}
         renderItem={renderItem}
         keyExtractor={Item => Item.id}

@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 80,
     marginHorizontal: 10,
+    
   },
   productInfoContainer: {
     paddingVertical: 10,
