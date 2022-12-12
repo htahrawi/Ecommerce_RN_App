@@ -2,13 +2,16 @@ import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react
 import React from 'react';
 import Colors from '../theme/Colors';
 import CustomButton from './CustomButton';
+import { useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 const CustomProductCard = ({productName, categoryOfProduct, price, rate }) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity 
         style={styles.productItem}
         activeOpacity={.6}
+        onPress={()=>{navigation.navigate('productDetails');}}
         >
       <Image
         source={require('../assets/images/product.png')}

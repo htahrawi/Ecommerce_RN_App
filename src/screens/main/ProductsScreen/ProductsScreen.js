@@ -63,16 +63,16 @@ const DATA = [
   },
 ];
 
-const renderItem = ({item}) => (
-  <CustomProductCard
-    productName={item.title}
-    price={item.price}
-    rate={item.rate}
-    categoryOfProduct={item.categoryOfProduct}
-  />
-);
 
 const ProductsScreen = props => {
+  const renderItem = ({item}) => (
+    <CustomProductCard
+      productName={item.title}
+      price={item.price}
+      rate={item.rate}
+      categoryOfProduct={item.categoryOfProduct}
+    />
+  );
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.primary} />
