@@ -15,6 +15,7 @@ import {
   CartScreen,
   CategoriesScreen,
   HomeScreen,
+  ProductDetailsScreen,
   ProductsScreen,
   ProfileScreen,
 } from '../screens';
@@ -51,7 +52,7 @@ const TabNavigator = props => {
         headerLeft: () => (
           <TouchableOpacity
             onPress={() => {
-              //   props.navigation.navigate('TabNavigaftor');
+                // props.navigation.navigate('main', {screen: 'Home'});
             }}>
             <Image
               source={require('../assets/icons/back.png')}
@@ -77,6 +78,7 @@ const TabNavigator = props => {
               ]}
             />
           ),
+          headerLeft: ()=>{}
         }}
       />
       <Tab.Screen
