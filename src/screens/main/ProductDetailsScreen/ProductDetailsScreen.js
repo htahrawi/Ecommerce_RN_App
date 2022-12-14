@@ -14,7 +14,7 @@ const {width, height} = Dimensions.get('window');
 
 const ProductDetailsScreen = () => {
   const [quantity, setQuantity] = useState(0);
-  const handleOnPressIncrease = (value)=>{
+  const handleOnPressIncrease = ()=>{
     setQuantity(quantity+1);
   }
   const handleOnPressdecrease = ()=>{

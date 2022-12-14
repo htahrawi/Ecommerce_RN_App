@@ -64,7 +64,7 @@ const DATA = [
 ];
 
 
-const ProductsScreen = props => {
+const ProductsScreen = () => {
   const renderItem = ({item}) => (
     <CustomProductCard
       productName={item.title}

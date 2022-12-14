@@ -2,6 +2,7 @@ const colors = {
   primary: '#FD5606',
   secondry: '#FE8E5980',
   background: '#FE8E59',
+  // rgba(254, 142, 89, 0.16
   white: '#fff',
   black: '#000',
   error: '#FF0000',
