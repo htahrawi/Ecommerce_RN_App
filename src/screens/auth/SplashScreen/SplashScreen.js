@@ -1,15 +1,17 @@
 import {
+  ActivityIndicator,
   Image,
   StatusBar,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Colors from '../../../theme/Colors';
 import {CustomButton} from '../../../components';
 
 const SplashScreen = props => {
+  const [loading, setLoading] = useState(false);
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={Colors.primary} />
@@ -23,13 +25,17 @@ const SplashScreen = props => {
         </View>
         <Text style={styles.txt}>Shopping App</Text>
       </View>
-      <CustomButton
+      {
+        loading? 
+      <ActivityIndicator size={'large'} color={'#fff'} />
+      :<CustomButton
         onPress={() => {
           props.navigation.navigate('signIn');
         }}
         title="Get Started"
         type="SECONDARY"
         />
+        }
     </View>
   );
 };

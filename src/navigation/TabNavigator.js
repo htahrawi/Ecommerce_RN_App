@@ -98,7 +98,7 @@ const TabNavigator = props => {
         }}
       />
       <Tab.Screen
-        name="Product"
+        name="Products"
         component={ProductsScreen}
         options={{
           tabBarIcon: props => (

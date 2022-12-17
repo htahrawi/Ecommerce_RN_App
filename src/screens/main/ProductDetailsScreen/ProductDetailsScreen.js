@@ -6,27 +6,40 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Colors from '../../../theme/Colors';
-import { CustomButton } from '../../../components';
+import {CustomButton} from '../../../components';
 
 const {width, height} = Dimensions.get('window');
+const toUpperCaseChar = text => {
+  const arr = text.split(' ');
+  let textCamel = '';
+  for (let i = 0; i < arr.length; i++) {
+    const firstChar = arr[i][0].toUpperCase();
+    textCamel += firstChar + arr[i].slice(1) + ' ';
+  }
+  textCamel = textCamel.trim();
+  return textCamel;
+};
 
-const ProductDetailsScreen = () => {
+const ProductDetailsScreen = props => {
   const [quantity, setQuantity] = useState(0);
-  const handleOnPressIncrease = ()=>{
-    setQuantity(quantity+1);
-  }
-  const handleOnPressdecrease = ()=>{
-    if (quantity!=0) {
-      setQuantity(quantity-1)
+  const handleOnPressIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+  const handleOnPressdecrease = () => {
+    if (quantity != 0) {
+      setQuantity(quantity - 1);
     }
-  }
+  };
+
+  const {id, title, descreption, price, categoryOfProduct, image, rate} =
+    props.route.params;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.productDetailsContainer}>
         <Image
-          source={require('../../../assets/images/product.png')}
+          source={{uri: image}}
           resizeMode="contain"
           style={styles.productImage}
         />
@@ -38,7 +51,7 @@ const ProductDetailsScreen = () => {
               alignItems: 'baseline',
             }}>
             <Text numberOfLines={1} style={styles.productTitle}>
-              Fjallaraven - Foldsack...
+              {title.slice(0, 25)}
             </Text>
             <View style={styles.rateContainer}>
               <Image
@@ -46,32 +59,24 @@ const ProductDetailsScreen = () => {
                 style={styles.starIcon}
                 resizeMode="contain"
               />
-              <Text style={styles.rate}>3.9</Text>
+              <Text style={styles.rate}>{rate}</Text>
             </View>
           </View>
-          <Text style={styles.categoryOfProduct}>Men's Clothes</Text>
-          <Text style={styles.price}>109.95 $</Text>
+          <Text style={styles.categoryOfProduct}>{toUpperCaseChar(categoryOfProduct)}</Text>
+          <Text style={styles.price}>{price} $</Text>
         </View>
       </View>
       <View style={styles.descreptionContainer}>
         <View>
           <Text style={styles.label}>Product Name</Text>
           <Text numberOfLines={3} style={styles.fullName}>
-            Fjallaraven - Foldsack... asdf asdf aas dfsdddddd asdfddas asdf sadb
-            asdf asdf
+            {title}
           </Text>
         </View>
         <View>
           <Text style={styles.label}>Product Description</Text>
           <Text numberOfLines={10} style={styles.fullName}>
-            Fjallaraven - Foldsack... asdf asdf aas dfsdddddd asdfddas asdf sadb
-            asdf asdfasd asdf asdfa asdasdfasd addddddd asdfa ljasdfj lkasdk
-            asdlkas aslkdf asldk asdfl asfdddddddddddd asdf asdddddddddd as
-            asdddddddd asddddddssa asdf asddsad Fjallaraven - Foldsack asdf asdf
-            aas dfsdddddd asdfddas asdf sadb asdf asdfasd asdf asdfa asdasdfasd
-            addddddd asdfa ljasdfj lkasdk asdlkas aslkdf asldk asdfl
-            asfdddddddddddd asdf asdddddddddd as asdddddddd asddddddssa asdf
-            asddsad Fjallaraven -
+            {descreption}
           </Text>
         </View>
         <View style={styles.quantityContainer}>
@@ -190,7 +195,7 @@ const styles = StyleSheet.create({
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   counter: {
     flexDirection: 'row',
@@ -198,11 +203,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderRadius: 10,
     alignItems: 'center',
-    width: '50%'
+    width: '50%',
   },
-  countNumber:{
+  countNumber: {
     fontSize: 22,
     color: Colors.white,
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 });

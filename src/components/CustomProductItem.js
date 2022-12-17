@@ -2,24 +2,36 @@ import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import Colors from '../theme/Colors';
 import CustomButton from './CustomButton';
+import { useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
+const toUpperCaseChar = text => {
+  const arr = text.split(' ');
+  let textCamel = '';
+  for (let i = 0; i < arr.length; i++) {
+    const firstChar = arr[i][0].toUpperCase();
+    textCamel += firstChar + arr[i].slice(1) + ' ';
+  }
+  textCamel = textCamel.trim();
+  return textCamel;
+};
 
-const CustomProductItem = () => {
+const CustomProductItem = ({title, categoryOfProduct, price, rate, image, onPress}) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.topProductsContainer}>
       <View style={styles.productContainer}>
         <Image
-          source={require('../assets/images/product.png')}
+          source={{uri: image}}
           style={styles.productImage}
           resizeMode="contain"
         />
         <View style={styles.productInfoContainer}>
           <Text numberOfLines={1} style={styles.productTitle}>
-            Fjallraven - Foldsack...
+            {title.slice(0,20)}
           </Text>
-          <Text style={styles.categoryOfProduct}>Men's Clothing</Text>
-          <Text style={styles.price}>109.95$</Text>
+          <Text style={styles.categoryOfProduct}>{toUpperCaseChar(categoryOfProduct)}</Text>
+          <Text style={styles.price}>{price} $</Text>
         </View>
         <View>
           <View style={styles.rateContainer}>
@@ -28,13 +40,13 @@ const CustomProductItem = () => {
               style={styles.starIcon}
               resizeMode="contain"
             />
-            <Text style={styles.rate}>3.9</Text>
+            <Text style={styles.rate}>{rate}</Text>
           </View>
           <CustomButton
             title={'Buy Now'}
-            myBtnStyle={{width: '100%', height: height*.055, padding: 12 }}
+            myBtnStyle={{width: '100%', height: height * 0.055, padding: 12, paddingVertical: 10}}
             myTxtStyle={{fontWeight: '500', fontSize: 18, alignSelf: 'center'}}
-            onPress= {()=>{}}
+            onPress={onPress}
           />
         </View>
       </View>
@@ -55,6 +67,7 @@ const styles = StyleSheet.create({
   },
   productContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   productImage: {
     width: 50,

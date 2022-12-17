@@ -1,28 +1,54 @@
-import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import Colors from '../theme/Colors';
 import CustomButton from './CustomButton';
-import { useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
-const CustomProductCard = ({productName, categoryOfProduct, price, rate }) => {
-  const navigation = useNavigation();
+// To let the first char capital
+const toUpperCaseChar = (text)=>{
+   const arr = text.split(' ');
+   let textCamel ='';
+   for (let i = 0; i < arr.length; i++) {
+    const firstChar = arr[i][0].toUpperCase();
+    textCamel += firstChar + arr[i].slice(1) + ' ';
+   }
+   textCamel = textCamel.trim();
+   return textCamel;
+}
+const CustomProductCard = ({
+  productName,
+  categoryOfProduct,
+  price,
+  rate,
+  image,
+  id,
+  onPress,
+}) => {
+
+  const camelCategoryOfProduct = toUpperCaseChar(categoryOfProduct);
   return (
-    <TouchableOpacity 
-        style={styles.productItem}
-        activeOpacity={.6}
-        onPress={()=>{navigation.navigate('productDetails');}}
-        >
+    <View
+      style={styles.productItem}
+      activeOpacity={0.6}
+      // onPress={onPress}
+      id={id}>
       <Image
-        source={require('../assets/images/product.png')}
+        source={{uri: image}}
         style={styles.productImage}
         resizeMode="contain"
       />
       <View style={styles.productInfoContainer}>
         <Text numberOfLines={1} style={styles.productTitle}>
-          {productName}
+          {productName.slice(0, 20)}
         </Text>
-        <Text style={styles.categoryOfProduct}>{categoryOfProduct}</Text>
+        <Text style={styles.categoryOfProduct}>{camelCategoryOfProduct}</Text>
       </View>
       <View style={styles.ratePriceContainer}>
         <Text style={styles.price}>{price}$</Text>
@@ -45,10 +71,11 @@ const CustomProductCard = ({productName, categoryOfProduct, price, rate }) => {
         myTxtStyle={{
           fontSize: 15,
           fontWeight: '400',
-          lineHeight: 18,
+          // lineHeight: 18,
         }}
+        onPress={onPress}
       />
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -73,7 +100,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontSize: 16,
     fontWeight: '600',
-    lineHeight: 22,
+    // lineHeight: 22,
     letterSpacing: 0.32,
     // padding: 10,
   },
@@ -82,14 +109,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 0.32,
     textAlign: 'center',
-    lineHeight: 14,
+    // lineHeight: 14,
   },
   price: {
     fontSize: 16,
     fontWeight: '500',
     color: Colors.black,
     letterSpacing: 1,
-    lineHeight: 16,
+    // lineHeight: 16,
   },
   ratePriceContainer: {
     flexDirection: 'row',
