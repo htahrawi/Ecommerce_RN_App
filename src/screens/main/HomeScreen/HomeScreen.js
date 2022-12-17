@@ -1,22 +1,68 @@
 import {
+  ActivityIndicator,
   Dimensions,
   FlatList,
-  Image,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  Touchable,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Colors from '../../../theme/Colors';
-import {CustomButton, CustomProductItem} from '../../../components';
+import {CustomProductItem} from '../../../components';
+import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 
-const {width, height} = Dimensions.get('window');
+const {height} = Dimensions.get('window');
+// to let the first char capital
+const toUpperCaseChar = text => {
+  const arr = text.split(' ');
+  let textCamel = '';
+  for (let i = 0; i < arr.length; i++) {
+    const firstChar = arr[i][0].toUpperCase();
+    textCamel += firstChar + arr[i].slice(1) + ' ';
+  }
+  textCamel = textCamel.trim();
+  return textCamel;
+};
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const Category = ({name}) => (
+    <TouchableOpacity
+      style={styles.catergory}
+      onPress={() => {
+        navigation.navigate('Products', {categoryName: name});
+      }}>
+      <Text style={styles.categoryName}>{toUpperCaseChar(name)}</Text>
+    </TouchableOpacity>
+  );
+  const renderItem = ({item}) => <Category name={item} />;
+
+  useEffect(() => {
+    axios
+      .get('https://fakestoreapi.com/products')
+      .then(response => {
+        setProducts(response.data);
+      })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+    axios
+      .get('https://fakestoreapi.com/products/categories')
+      .then(response => {
+        setCategories(response.data.slice(0, 3));
+      })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }, []);
+  products.sort(
+    (a, b) => parseFloat(b.rating.rate) - parseFloat(a.rating.rate),
+  );
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={Colors.primary} />
@@ -24,37 +70,72 @@ const HomeScreen = () => {
       <View style={styles.topTitleContainer}>
         <Text style={styles.title}>Categories</Text>
         <TouchableOpacity>
-          <Text style={styles.seeAll}>See all</Text>
+          <Text
+            style={styles.seeAll}
+            onPress={() => {
+              navigation.navigate('Categories');
+            }}>
+            See all
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.categoriesContainer}>
-        <View style={styles.catergory}>
-          <Text style={styles.categoryName}>Electronic</Text>
-        </View>
-        <View style={styles.catergory}>
-          <Text style={styles.categoryName}>Electronic</Text>
-        </View>
-        <View style={styles.catergory}>
-          <Text style={styles.categoryName}>Electronic</Text>
-        </View>
+        {categories && categories.length > 0 ? (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={categories}
+            renderItem={renderItem}
+            keyExtractor={item => {
+              return item;
+            }}
+            numColumns="3"
+          />
+        ) : (
+          <ActivityIndicator size={'large'} color={Colors.primary} />
+        )}
       </View>
       {/* Products Container */}
       <View style={styles.topTitleContainer}>
         <Text style={styles.title}>Top Products</Text>
         <TouchableOpacity>
-          <Text style={styles.seeAll}>See all</Text>
+          <Text
+            style={styles.seeAll}
+            onPress={() => {
+              navigation.navigate('Products', {categoryName: 'All'});
+            }}>
+            See all
+          </Text>
         </TouchableOpacity>
       </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-      >
-        <CustomProductItem />
-        <CustomProductItem />
-        <CustomProductItem />
-        <CustomProductItem />
-        <CustomProductItem />
-        <CustomProductItem />
-      </ScrollView>
+      {products && products.length > 0 ? (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={products.slice(0, 5)}
+          renderItem={({item}) => (
+            <CustomProductItem
+              title={item.title}
+              rate={item.rating.rate}
+              categoryOfProduct={item.category}
+              price={item.price}
+              image={item.image}
+              onPress={() => {
+                navigation.navigate('productDetails', {
+                  id: item.id,
+                  title: item.title,
+                  descreption: item.description,
+                  price: item.price,
+                  categoryOfProduct: item.category,
+                  image: item.image,
+                  rate: item.rating.rate,
+                });
+              }}
+            />
+          )}
+          keyExtractor={Item => Item.id}
+        />
+      ) : (
+        <ActivityIndicator size={'large'} color={Colors.primary} />
+      )}
     </View>
   );
 };
@@ -67,6 +148,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     padding: 10,
+    paddingBottom: 0
   },
   topTitleContainer: {
     flexDirection: 'row',
@@ -91,17 +173,20 @@ const styles = StyleSheet.create({
   categoriesContainer: {
     paddingVertical: 20,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
+    // flex: 1
   },
   catergory: {
     flex: 1,
-    padding: 10,
+    // padding: 10,
     backgroundColor: Colors.white,
     height: height * 0.13,
     borderRadius: 10,
     marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   categoryName: {
     fontSize: 15,
@@ -109,61 +194,5 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     fontWeight: '500',
     letterSpacing: 0.9,
-  },
-  // Product Styling
-  topProductsContainer: {
-    backgroundColor: Colors.white,
-    borderRadius: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    marginTop: 20,
-  },
-  productContainer: {
-    flexDirection: 'row',
-  },
-  productImage: {
-    width: 50,
-    height: 80,
-    marginHorizontal: 10,
-  },
-  productInfoContainer: {
-    paddingVertical: 10,
-  },
-  productTitle: {
-    color: Colors.black,
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 18,
-    letterSpacing: 1,
-  },
-  categoryOfProduct: {
-    fontSize: 15,
-    fontWeight: '500',
-    letterSpacing: 1,
-    marginTop: 3,
-  },
-  price: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: Colors.black,
-    letterSpacing: 1,
-    lineHeight: 16,
-    marginTop: 4,
-  },
-  rateContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    justifyContent: 'flex-end',
-  },
-  starIcon: {
-    width: 15,
-    height: 15,
-    marginRight: 10,
-  },
-  rate: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: Colors.black,
   },
 });

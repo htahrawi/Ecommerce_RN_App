@@ -1,89 +1,80 @@
-import {FlatList, StatusBar, StyleSheet} from 'react-native';
-import React from 'react';
+import {ActivityIndicator, FlatList, StatusBar, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Colors from '../../../theme/Colors';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CustomProductCard} from '../../../components';
+import axios from 'axios';
 
-const DATA = [
-  {
-    id: '111',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '222',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '333',
-    title: 'Fjallraven - Foldasck ',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '444',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '555',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '666',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '777',
-    title: 'Husam sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '888',
-    title: 'Ali sack asdf',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-];
+const ProductsScreen = props => {
+  const [products, setProducts] = useState([]);
+  let sortedProducts = [];
+  let [categoryName, setCategoryName] = useState('All');
 
+  try {
+    categoryName = props.route.params.categoryName; 
+    console.log("NAME CATEGORY SENDE IT ",categoryName);
+  } catch (error) {
+    console.log("Show All Products");
+  }
 
-const ProductsScreen = () => {
+  useEffect(() => {
+    axios
+      .get('https://fakestoreapi.com/products')
+      .then(response => {
+        setProducts(response.data);
+      })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }, []);
+  
+  console.log('products Are: ', products);
+  console.log('Sorted products Are: ', sortedProducts);
+
+  if (categoryName != 'All') {
+    products.forEach(item =>{
+      if (item.category === categoryName) {
+        sortedProducts.push(item)
+      }
+    })
+  }
+  categoryName? console.log(categoryName, " EXist"): null;
+
   const renderItem = ({item}) => (
     <CustomProductCard
+      id={item.id}
       productName={item.title}
       price={item.price}
-      rate={item.rate}
-      categoryOfProduct={item.categoryOfProduct}
+      rate={item.rating.rate}
+      categoryOfProduct={item.category}
+      image={item.image}
+      onPress={() =>
+        props.navigation.navigate('productDetails', {
+          id: item.id,
+          title: item.title,
+          descreption: item.description,
+          price: item.price,
+          categoryOfProduct: item.category,
+          image: item.image,
+        })
+      }
     />
   );
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView stylex={styles.container}>
       <StatusBar backgroundColor={Colors.primary} />
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={DATA}
-        style={styles.productsWrapper}
-        renderItem={renderItem}
-        keyExtractor={Item => Item.id}
-        numColumns={2}
-      />
+      {products && products.length > 0 ? (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={categoryName=='All'? products: sortedProducts}
+          style={styles.productsWrapper}
+          renderItem={renderItem}
+          keyExtractor={Item => Item.id}
+          numColumns={2}
+        />
+      ) : (
+        <ActivityIndicator size={'large'} color={Colors.primary} />
+      )}
     </SafeAreaView>
   );
 };
@@ -92,14 +83,19 @@ export default ProductsScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.secondry,
+    // backgroundColor: Colors.secondry,
+    // backgroundColor: '#aa2',
     width: '100%',
     height: '100%',
     alignItems: 'center',
     paddingTop: 0,
-    paddingHorizontal: 10,
+    paddingVertical: 20,
+    flex: 1
   },
   productsWrapper: {
-    paddingTop: 10,
+    width: '100%',
+    height: '100%',
+    // paddingVertical: 20,
+    backgroundColor: Colors.secondry,
   },
 });
