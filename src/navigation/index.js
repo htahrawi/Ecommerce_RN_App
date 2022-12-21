@@ -1,6 +1,11 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {HomeScreen, ProductDetailsScreen, ProfileScreen, SignInScreen, SignUpScreen, SplashScreen} from '../screens/';
+import {
+  ProductDetailsScreen,
+  SignInScreen,
+  SignUpScreen,
+  SplashScreen,
+} from '../screens/';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabNavigator from './TabNavigator';
@@ -8,7 +13,7 @@ import Colors from '../theme/Colors';
 
 const Stack = createNativeStackNavigator();
 
-const Navigation = () => {
+const Navigation = props => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -19,7 +24,7 @@ const Navigation = () => {
         <Stack.Screen
           name="productDetails"
           component={ProductDetailsScreen}
-          options={{
+          options={({navigation}) => ({
             headerShown: true,
             headerStyle: {
               backgroundColor: Colors.primary,
@@ -33,7 +38,7 @@ const Navigation = () => {
             headerLeft: () => (
               <TouchableOpacity
                 onPress={() => {
-                  // props.navigation.navigate('TabNavigaftor');
+                  navigation.navigate('main', {screen: 'Home'});
                 }}>
                 <Image
                   source={require('../assets/icons/back.png')}
@@ -41,7 +46,7 @@ const Navigation = () => {
                 />
               </TouchableOpacity>
             ),
-          }}
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
