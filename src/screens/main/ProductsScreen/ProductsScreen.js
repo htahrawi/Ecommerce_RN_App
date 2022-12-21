@@ -12,7 +12,6 @@ const ProductsScreen = props => {
 
   try {
     categoryName = props.route.params.categoryName; 
-    console.log("NAME CATEGORY SENDE IT ",categoryName);
   } catch (error) {
     console.log("Show All Products");
   }
@@ -28,9 +27,6 @@ const ProductsScreen = props => {
       });
   }, []);
   
-  console.log('products Are: ', products);
-  console.log('Sorted products Are: ', sortedProducts);
-
   if (categoryName != 'All') {
     products.forEach(item =>{
       if (item.category === categoryName) {
@@ -38,7 +34,7 @@ const ProductsScreen = props => {
       }
     })
   }
-  categoryName? console.log(categoryName, " EXist"): null;
+  // categoryName? console.log(categoryName, " EXist"): null;
 
   const renderItem = ({item}) => (
     <CustomProductCard

@@ -52,7 +52,7 @@ const TabNavigator = props => {
         headerLeft: () => (
           <TouchableOpacity
             onPress={() => {
-                // props.navigation.navigate('main', {screen: 'Home'});
+                props.navigation.navigate('main', {screen: 'Home'});
             }}>
             <Image
               source={require('../assets/icons/back.png')}

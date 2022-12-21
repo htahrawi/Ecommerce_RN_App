@@ -13,8 +13,10 @@ import Colors from '../../../theme/Colors';
 import {CustomProductItem} from '../../../components';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {height} = Dimensions.get('window');
+
 // to let the first char capital
 const toUpperCaseChar = text => {
   const arr = text.split(' ');
@@ -26,6 +28,8 @@ const toUpperCaseChar = text => {
   textCamel = textCamel.trim();
   return textCamel;
 };
+
+
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -148,7 +152,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     padding: 10,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   topTitleContainer: {
     flexDirection: 'row',

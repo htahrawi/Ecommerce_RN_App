@@ -6,12 +6,25 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Colors from '../../../theme/Colors';
 import {CustomButton} from '../../../components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = props => {
-  const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState('');
+  useEffect(() => {
+    AsyncStorage.getItem('user').then(user => {
+      if (user) {
+        setToken(JSON.parse(user).myToken);
+      }
+    });
+  }, []);
+  console.log('token is ', token);
+  useEffect(() => {
+    token ? props.navigation.navigate('main') : <></>;
+  }, [token]);
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={Colors.primary} />
@@ -25,17 +38,13 @@ const SplashScreen = props => {
         </View>
         <Text style={styles.txt}>Shopping App</Text>
       </View>
-      {
-        loading? 
-      <ActivityIndicator size={'large'} color={'#fff'} />
-      :<CustomButton
+      <CustomButton
         onPress={() => {
           props.navigation.navigate('signIn');
         }}
         title="Get Started"
         type="SECONDARY"
-        />
-        }
+      />
     </View>
   );
 };

@@ -6,16 +6,43 @@ import {
   TouchableOpacity,
   View,
   SafeAreaView,
+  Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Colors from '../../../theme/Colors';
 import {CustomButton, CustomInput} from '../../../components';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const SignInScreen = props => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const onHandleSubmmit = async () => {
+    if (username.length == 0 || username.length < 3) {
+      return Alert.alert('MESSAGE ERROR', 'USERNAME MUST BE MORE THAN 3 CHARS');
+    }
+    if (password.length == 0 || password.length < 6) {
+      return Alert.alert('MESSAGE ERROR', 'PASSWORD MUST BE MORE THAN 6 CHARS');
+    }
+    const respnose = await axios.post('https://fakestoreapi.com/auth/login', {
+      username,
+      password,
+    });
+    const user = await respnose.data;
+    let myToken = user.token;
+    console.log('MY TOKEN IS ', user.token);
+    await AsyncStorage.setItem(
+      'user',
+      JSON.stringify({
+        myToken,
+        username,
+      }),
+    );
+    props.navigation.navigate('main');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,7 +74,7 @@ const SignInScreen = props => {
         <CustomButton
           title="Sign In"
           myBtnStyle={{alignSelf: 'center', width: '100%', marginTop: 30}}
-          onPress={() => {props.navigation.navigate('main')}}
+          onPress={onHandleSubmmit}
         />
       </View>
       <View style={{flexDirection: 'row'}}>
