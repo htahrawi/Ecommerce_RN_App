@@ -5,28 +5,45 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Colors from '../theme/Colors';
 import {CustomButton} from '../components';
+import {CartContext} from '../store/context/cartContext';
 
 const {width, height} = Dimensions.get('window');
 
-const CustomCardProduct = ({productName, categoryOfProduct, price }) => {
+const CustomCardProduct = ({
+  productName,
+  categoryOfProduct,
+  price,
+  image,
+  id,
+}) => {
   const [quantity, setQuantity] = useState(1);
   const handleOnPressIncrease = () => {
     setQuantity(quantity + 1);
   };
+
   const handleOnPressdecrease = () => {
     if (quantity != 0) {
       setQuantity(quantity - 1);
     }
   };
+
+  const cart = useContext(CartContext);
+
+  const handleOnPressCancel = id => {
+    cart.removeFromCart(id);
+    Alert.alert('Success', 'Product removed from cart successfully');
+  };
+
   return (
     <View>
       <View style={styles.productDetailsContainer}>
         <Image
-          source={require('../assets/images/product.png')}
+          source={{uri: image}}
           resizeMode="contain"
           style={styles.productImage}
         />
@@ -40,7 +57,7 @@ const CustomCardProduct = ({productName, categoryOfProduct, price }) => {
             <Text numberOfLines={1} style={styles.productTitle}>
               {productName}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleOnPressCancel(id)}>
               <Image
                 source={require('../assets/icons/cancel.png')}
                 style={styles.cancelIcon}
@@ -50,7 +67,7 @@ const CustomCardProduct = ({productName, categoryOfProduct, price }) => {
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={styles.categoryOfProduct}>{categoryOfProduct}</Text>
-            <Text style={styles.price}>{price} $</Text>
+            <Text style={styles.price}>{price}$</Text>
           </View>
           <View style={styles.quantityContainer}>
             <View style={styles.counter}>

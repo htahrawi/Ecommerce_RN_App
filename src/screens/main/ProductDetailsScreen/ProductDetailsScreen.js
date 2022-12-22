@@ -5,11 +5,13 @@ import {
   Image,
   View,
   Dimensions,
+  Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Colors from '../../../theme/Colors';
 import {CustomButton} from '../../../components';
-
+import {CartContext} from '../../../store/context/cartContext';
+import {useRoute} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 const toUpperCaseChar = text => {
   const arr = text.split(' ');
@@ -23,18 +25,51 @@ const toUpperCaseChar = text => {
 };
 
 const ProductDetailsScreen = props => {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+
+  const route = useRoute();
+
+  const {id, title, descreption, price, categoryOfProduct, image, rate} =
+    route.params;
+
+  const cart = useContext(CartContext);
+
+  const isAdded = cart.cart.find(product => product.id === id);
+
+  const totalPrice = price * quantity;
+
+  console.log('quantity', quantity);
+  console.log('price', price);
+
+  console.log('totalPrice', totalPrice);
+
+  const addToCartHandler = () => {
+    if (!isAdded) {
+      cart.addToCart(
+        id,
+        title,
+        totalPrice,
+        descreption,
+        categoryOfProduct,
+        image,
+        price,
+      );
+      Alert.alert('Success', 'Product added to cart successfully');
+    } else {
+      Alert.alert('Product already added to cart');
+    }
+  };
+
   const handleOnPressIncrease = () => {
     setQuantity(quantity + 1);
   };
+
   const handleOnPressdecrease = () => {
     if (quantity != 0) {
       setQuantity(quantity - 1);
     }
   };
 
-  const {id, title, descreption, price, categoryOfProduct, image, rate} =
-    props.route.params;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.productDetailsContainer}>
@@ -62,7 +97,9 @@ const ProductDetailsScreen = props => {
               <Text style={styles.rate}>{rate}</Text>
             </View>
           </View>
-          <Text style={styles.categoryOfProduct}>{toUpperCaseChar(categoryOfProduct)}</Text>
+          <Text style={styles.categoryOfProduct}>
+            {toUpperCaseChar(categoryOfProduct)}
+          </Text>
           <Text style={styles.price}>{price} $</Text>
         </View>
       </View>
@@ -96,7 +133,11 @@ const ProductDetailsScreen = props => {
             />
           </View>
         </View>
-        <CustomButton title={'Add to Cart'} myBtnStyle={{width: '100%'}} />
+        <CustomButton
+          onPress={addToCartHandler}
+          title={'Add to Cart'}
+          myBtnStyle={{width: '100%'}}
+        />
       </View>
     </SafeAreaView>
   );

@@ -10,70 +10,21 @@ import React from 'react';
 import Colors from '../../../theme/Colors';
 import CustomCartProduct from '../../../components/CustomCartProduct';
 import {CustomButton} from '../../../components';
-
-const DATA = [
-  {
-    id: '111',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '222',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '333',
-    title: 'Fjallraven - Foldasck ',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '444',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '555',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '666',
-    title: 'Fold sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '777',
-    title: 'Husam sack',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-  {
-    id: '888',
-    title: 'Ali sack asdf',
-    price: 109.5,
-    rate: 3.5,
-    categoryOfProduct: `Men's Clothes`,
-  },
-];
+import {useContext} from 'react';
+import {CartContext} from '../../../store/context/cartContext';
 
 const CartScreen = () => {
+  const cart = useContext(CartContext);
+  const DATA = cart.cart;
+  const totalPrice = cart.total;
+  console.log('totalPrice', totalPrice);
+
+  console.log('DATA', DATA);
+
   const renderItem = ({item}) => (
     <CustomCartProduct
-      productName={item.title}
+      id={item.id}
+      productName={item.title.slice(0,20)}
       categoryOfProduct={item.categoryOfProduct}
       price={item.price}
     />
@@ -100,15 +51,15 @@ const CartScreen = () => {
           <View style={styles.billStyle}>
             <View style={styles.row}>
               <Text style={styles.text}>Sub-total</Text>
-              <Text style={styles.text}>1000.56 $</Text>
+              <Text style={styles.text}>0 $</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.text}>Delivery</Text>
-              <Text style={styles.text}>1000.56 $</Text>
+              <Text style={styles.text}>0 $</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.total}>Total</Text>
-              <Text style={styles.total}>1000.56 $</Text>
+              <Text style={styles.total}>{totalPrice} $</Text>
             </View>
           </View>
           <CustomButton title="Checkout" myBtnStyle={{width: '100%'}} />
@@ -126,24 +77,24 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: Colors.secondry,
   },
-  billStyle:{
+  billStyle: {
     flex: 1,
     justifyContent: 'flex-start',
-  },  
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 2
+    marginVertical: 2,
   },
-  text:{
+  text: {
     fontSize: 16,
     fontWeight: '600',
-    color: Colors.gray[600]
+    color: Colors.gray[600],
   },
-  total:{
+  total: {
     fontSize: 16,
     fontWeight: '600',
     color: Colors.primary,
-    letterSpacing: .5
+    letterSpacing: 0.5,
   },
 });
