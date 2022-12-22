@@ -18,7 +18,7 @@ const CustomInput = ({
   isPassword = false,
   onChangeText,
   errorText='',
-  value
+  value,
 }) => {
   const [showPassword, setShowPassword] = useState(isPassword);
   const [errorMessage, setErrorMessage] = useState(errorText);
@@ -32,6 +32,7 @@ const CustomInput = ({
           style={styles.txtInput}
           secureTextEntry={showPassword}
           onChangeText={onChangeText}
+          onFocus={()=>{setErrorMessage('')}}
         />
         {isPassword ? (
           <TouchableOpacity
