@@ -52,6 +52,7 @@ const ProductsScreen = props => {
           price: item.price,
           categoryOfProduct: item.category,
           image: item.image,
+          rate: item.rating.rate,
         })
       }
     />
