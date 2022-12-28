@@ -5,20 +5,33 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {CustomProductCard} from '../../../components';
 import axios from 'axios';
 
-const ProductsScreen = props => {
-  const [products, setProducts] = useState([]);
+const SortedProductsScreen = props => {
+    const [products, setProducts] = useState([]);
+    let sortedProducts = [];
+    let categoryName = '';
 
-  useEffect(() => {
-    axios
-      .get('https://fakestoreapi.com/products')
-      .then(response => {
-        setProducts(response.data);
-      })
-      .catch(error => {
-        console.log('Error: ', error);
-      });
-  }, []);
-  
+    categoryName = props.route.params.categoryName;
+
+    useEffect(() => {
+        axios
+        .get('https://fakestoreapi.com/products')
+        .then(response => {
+            setProducts(response.data);
+        })
+        .catch(error => {
+            console.log('Error: ', error);
+        });
+    }, []);
+
+    if (categoryName != 'All') {
+        products.forEach(item => {
+        if (item.category === categoryName) {
+            sortedProducts.push(item);
+        }
+        });
+    }
+  // categoryName? console.log(categoryName, " EXist"): null;
+
   const renderItem = ({item}) => (
     <CustomProductCard
       id={item.id}
@@ -46,7 +59,7 @@ const ProductsScreen = props => {
       {products && products.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={products}
+          data={categoryName == 'All' ? products : sortedProducts}
           style={styles.productsWrapper}
           renderItem={renderItem}
           keyExtractor={Item => Item.id}
@@ -59,22 +72,22 @@ const ProductsScreen = props => {
   );
 };
 
-export default ProductsScreen;
+export default SortedProductsScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.secondry,
+    // backgroundColor: Colors.secondry,
     // backgroundColor: '#aa2',
     width: '100%',
     height: '100%',
-    // alignItems: 'center',
+    alignItems: 'center',
     paddingTop: 0,
     paddingVertical: 20,
-    // flex: 1
+    flex: 1,
   },
   productsWrapper: {
-    // width: '100%',
-    // height: '100%',
+    width: '100%',
+    height: '100%',
     // paddingVertical: 20,
     backgroundColor: Colors.secondry,
   },

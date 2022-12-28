@@ -4,7 +4,8 @@ export {
     CategoriesScreen,
     ProductDetailsScreen,
     ProductsScreen,
-    ProfileScreen
+    ProfileScreen,
+    SortedProductsScreen
 } from './main';
 export{
     SignInScreen,

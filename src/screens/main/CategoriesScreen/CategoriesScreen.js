@@ -31,7 +31,7 @@ const CategoriesScreen = () => {
     <TouchableOpacity
       style={styles.category}
       onPress={() => {
-        navigation.navigate('Products', {categoryName: name});
+        navigation.navigate('sortedProducts', {categoryName: name});
       }}>
       <Text style={styles.title}>{toUpperCaseChar(name)}</Text>
     </TouchableOpacity>

@@ -28,7 +28,7 @@ const ProfileScreen = props => {
         console.log('user not founds');
       }
     });
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     axios
@@ -55,6 +55,8 @@ const ProfileScreen = props => {
   const onLogoutPressed = () => {
     AsyncStorage.clear()
       .then(() => {
+        setEmail('');
+        setFullName('');
         props.navigation.navigate('signIn');
       })
       .catch(() => {
