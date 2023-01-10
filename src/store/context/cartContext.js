@@ -13,7 +13,8 @@ export const CartContext = createContext({
     descreption,
     categoryOfProduct,
     image,
-    price
+    price,
+    quantity,
   ) => {},
   removeFromCart: id => {},
   getCart: () => {},
@@ -28,10 +29,11 @@ const CartContextProvider = ({children}) => {
     id,
     title,
     totalPrice,
-    descreption,
+    // descreption,
     categoryOfProduct,
     image,
-    price
+    price,
+    quantity,
   ) => {
     setCart(products => [
       ...products,
@@ -39,16 +41,23 @@ const CartContextProvider = ({children}) => {
         id,
         title,
         totalPrice,
-        descreption,
+        // descreption,
         categoryOfProduct,
         image,
-        price
+        price,
+        quantity,
       },
     ]);
   };
+  // const updateQantity = (id, newQuantity) =>{
+  //   setCart(products=> [
+  //     ...products,
+  //     {
+  //     }
+  //   ])
+  // }
+  console.log('cart IS ', cart);
 
-  console.log('cart', cart);
-  
   const removeFromCart = id => {
     setCart(products => products.filter(product => product.id != id));
   };
@@ -72,7 +81,7 @@ const CartContextProvider = ({children}) => {
         setTotal(
           cart.map(product => product.totalPrice).reduce((a, b) => a + b),
         );
-      }else if(cart.length ==0 ){
+      } else if (cart.length == 0) {
         setTotal(0);
       }
     };

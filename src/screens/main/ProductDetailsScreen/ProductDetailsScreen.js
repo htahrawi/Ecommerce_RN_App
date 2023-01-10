@@ -28,19 +28,14 @@ const ProductDetailsScreen = props => {
   const [quantity, setQuantity] = useState(1);
 
   const route = useRoute();
-
-  const {id, title, descreption, price, categoryOfProduct, image, rate} =
+  const {id, title, descreption, price, categoryOfProduct, image, rate,} =
     route.params;
-
   const cart = useContext(CartContext);
-
   const isAdded = cart.cart.find(product => product.id === id);
-
   const totalPrice = price * quantity;
 
   console.log('quantity', quantity);
   console.log('price', price);
-
   console.log('totalPrice', totalPrice);
 
   const addToCartHandler = () => {
@@ -53,10 +48,11 @@ const ProductDetailsScreen = props => {
         categoryOfProduct,
         image,
         price,
+        quantity
       );
       Alert.alert('Success', 'Product added to cart successfully');
     } else {
-      Alert.alert('Product already added to cart');
+      Alert.alert('Warning','Product already added to cart');
     }
   };
 
