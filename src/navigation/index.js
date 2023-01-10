@@ -63,7 +63,7 @@ const Navigation = props => {
               fontSize: 20,
               lineHeight: 23,
             },
-            title: props.route.categoryName,
+            // title: props.route.categoryName,
             // title: "Husam Sorted",
             headerTitleAlign: 'center',
             headerLeft: () => (

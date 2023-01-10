@@ -16,9 +16,11 @@ import {CartContext} from '../../../store/context/cartContext';
 const CartScreen = () => {
   const cart = useContext(CartContext);
   const DATA = cart.cart;
-  const totalPrice = cart.total;
+  let delivery = 50;
+  let subTotal = cart.total;
+  let totalPrice = cart.total + delivery;
+  subTotal==0?(delivery=0, totalPrice=0): null;
   console.log('totalPrice', totalPrice);
-
   console.log('DATA', DATA);
 
   const renderItem = ({item}) => (
@@ -27,6 +29,8 @@ const CartScreen = () => {
       productName={item.title.slice(0,20)}
       categoryOfProduct={item.categoryOfProduct}
       price={item.price}
+      image={item.image}
+      requstedQuantity={item.quantity}
     />
   );
 
@@ -51,11 +55,11 @@ const CartScreen = () => {
           <View style={styles.billStyle}>
             <View style={styles.row}>
               <Text style={styles.text}>Sub-total</Text>
-              <Text style={styles.text}>0 $</Text>
+              <Text style={styles.text}>{subTotal} $</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.text}>Delivery</Text>
-              <Text style={styles.text}>0 $</Text>
+              <Text style={styles.text}>{delivery} $</Text>
             </View>
             <View style={styles.row}>
               <Text style={styles.total}>Total</Text>

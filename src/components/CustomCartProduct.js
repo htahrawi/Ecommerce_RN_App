@@ -20,8 +20,11 @@ const CustomCardProduct = ({
   price,
   image,
   id,
+  requstedQuantity
 }) => {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(requstedQuantity? requstedQuantity: 1);
+  // requstedQuantity> quantity? setQuantity(requstedQuantity): setQuantity(quantity);
+  console.log("QUANTITY OF ",productName, " IS ", quantity);
   const handleOnPressIncrease = () => {
     setQuantity(quantity + 1);
   };
@@ -33,7 +36,7 @@ const CustomCardProduct = ({
   };
 
   const cart = useContext(CartContext);
-
+  
   const handleOnPressCancel = id => {
     cart.removeFromCart(id);
     Alert.alert('Success', 'Product removed from cart successfully');
